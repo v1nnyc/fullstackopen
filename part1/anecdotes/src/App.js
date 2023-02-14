@@ -16,17 +16,29 @@ const App = () => {
     "The only way to go fast, is to go well.",
   ];
 
-  const [selected, setSelected] = useState(0);
+  const [anecdoteIndex, setSelected] = useState(0);
+  const [votes, setVoteCount] = useState(Array(anecdotes.length).fill(0));
 
-  const setToValue = () => {
+  const setAnecdoteIndex = () => {
     let randomIndex = Math.floor(Math.random() * anecdotes.length);
     setSelected(randomIndex);
   };
 
+  const castVote = () => {
+    let arrayCopy = [...votes];
+    arrayCopy[anecdoteIndex]++;
+    setVoteCount(arrayCopy);
+  };
+
   return (
     <>
-      <div>{anecdotes[selected]}</div>
-      <Button handleClick={() => setToValue()} text="next anecdote"></Button>
+      <div>{anecdotes[anecdoteIndex]}</div>
+      <div>has {votes[anecdoteIndex]} votes</div>
+      <Button handleClick={() => castVote()} text="vote"></Button>
+      <Button
+        handleClick={() => setAnecdoteIndex()}
+        text="next anecdote"
+      ></Button>
     </>
   );
 };
