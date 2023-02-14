@@ -4,7 +4,7 @@ const Button = (props) => (
   <button onClick={props.handleClick}>{props.text}</button>
 );
 
-const Display = ({ good, neutral, bad }) => {
+const Statistics = ({ good, neutral, bad }) => {
   let all = good + neutral + bad;
   return (
     <>
@@ -39,7 +39,7 @@ const App = () => {
       />
       <Button handleClick={() => setToValue(bad + 1, setBad)} text="bad" />
       <h1>statistics</h1>
-      <Display good={good} neutral={neutral} bad={bad}></Display>
+      <Statistics good={good} neutral={neutral} bad={bad}></Statistics>
     </div>
   );
 };
