@@ -22,10 +22,9 @@ const App = () => {
     let nameExists = persons.some((obj) => obj.name === newName);
 
     if (nameExists) {
-      alert(`${newName} is already added to phonebook`);
+      updatePerson(newName);
     } else {
       const personObject = {
-        id: persons.length + 1,
         name: newName,
         number: newNumber,
       };
@@ -35,6 +34,34 @@ const App = () => {
         setNewName("");
         setNewNumber("");
       });
+    }
+  };
+
+  const updatePerson = (name) => {
+    const personToUpate = persons.find((person) => person.name === name);
+
+    const updatedPersonObject = {
+      ...personToUpate,
+      number: newNumber,
+    };
+
+    if (
+      window.confirm(
+        `${name} is already in phonebook, replace old number with a new one?`
+      )
+    ) {
+      phonebookService
+        .update(personToUpate.id, updatedPersonObject)
+        .then((returnedPerson) => {
+          setPersons(
+            persons.map((person) =>
+              person.id !== personToUpate.id ? person : returnedPerson
+            )
+          );
+
+          setNewName("");
+          setNewNumber("");
+        });
     }
   };
 
