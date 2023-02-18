@@ -55,17 +55,23 @@ const App = () => {
       )
     ) {
       phonebookService
-        .update(personToUpate.id, updatedPersonObject)
+        .update(updatedPersonObject.id, updatedPersonObject)
         .then((returnedPerson) => {
           setPersons(
             persons.map((person) =>
-              person.id !== personToUpate.id ? person : returnedPerson
+              person.id !== updatedPersonObject.id ? person : returnedPerson
             )
           );
 
           updateNotification(`Updated ${returnedPerson.name}`, "success");
           setNewName("");
           setNewNumber("");
+        })
+        .catch((error) => {
+          updateNotification(
+            `Information of ${personToUpate.name} has already been removed from server`,
+            "error"
+          );
         });
     }
   };
