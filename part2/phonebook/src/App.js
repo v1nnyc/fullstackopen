@@ -3,12 +3,15 @@ import phonebookService from "./services/phonebook";
 import Filter from "./components/filter";
 import PersonForm from "./components/personForm";
 import Persons from "./components/persons";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [nameFilter, setNameFitler] = useState("");
+  const [notificationMessage, setNotificationMessage] = useState(null);
+  const [notificationType, setNotificationType] = useState(null);
 
   useEffect(() => {
     phonebookService.getAll().then((persons) => {
@@ -31,6 +34,7 @@ const App = () => {
 
       phonebookService.create(personObject).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
+        updateNotification(`Added ${returnedPerson.name}`, "success");
         setNewName("");
         setNewNumber("");
       });
@@ -59,6 +63,7 @@ const App = () => {
             )
           );
 
+          updateNotification(`Updated ${returnedPerson.name}`, "success");
           setNewName("");
           setNewNumber("");
         });
@@ -71,9 +76,20 @@ const App = () => {
     if (window.confirm(`Delete ${person.name}?`)) {
       phonebookService.del(id).then(() => {
         setPersons(persons.filter((person) => person.id !== id));
+
+        updateNotification(`Deleted ${person.name}`, "success");
       });
     }
   };
+
+  function updateNotification(message, type) {
+    setNotificationMessage(message);
+    setNotificationType(type);
+    setTimeout(() => {
+      setNotificationMessage(null);
+      setNotificationType(null);
+    }, 5000);
+  }
 
   const handlePersonChange = (event) => {
     setNewName(event.target.value);
@@ -96,6 +112,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification
+        message={notificationMessage}
+        errorType={notificationType}
+      ></Notification>
       <Filter
         nameFilter={nameFilter}
         handleNameFilterChange={handleNameFilterChange}
