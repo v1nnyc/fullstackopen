@@ -1,3 +1,4 @@
+import CollapsedCountry from "./collapsedCountry";
 import Country from "./country";
 
 const CountryList = ({ countryList }) => {
@@ -6,8 +7,8 @@ const CountryList = ({ countryList }) => {
   } else if (countryList.length > 1) {
     return (
       <div>
-        {countryList.map((country) => (
-          <div id={country.area}>{country.name.common}</div>
+        {countryList.map((country, key) => (
+          <CollapsedCountry key={key} country={country}></CollapsedCountry>
         ))}
       </div>
     );
