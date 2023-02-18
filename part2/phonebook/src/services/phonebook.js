@@ -16,10 +16,16 @@ const update = (id, newObject) => {
   return request.then((response) => response.data);
 };
 
+const del = (id) => {
+  const request = axios.delete(`${baseUrl}/${id}`);
+  return request.then((response) => response.data);
+};
+
 const phonebookService = {
   getAll,
   create,
   update,
+  del,
 };
 
 export default phonebookService;

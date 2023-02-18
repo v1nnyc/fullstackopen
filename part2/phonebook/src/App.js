@@ -38,6 +38,16 @@ const App = () => {
     }
   };
 
+  const deletePerson = (person) => {
+    let id = person.id;
+
+    if (window.confirm(`Delete ${person.name}?`)) {
+      phonebookService.del(id).then(() => {
+        setPersons(persons.filter((person) => person.id !== id));
+      });
+    }
+  };
+
   const handlePersonChange = (event) => {
     setNewName(event.target.value);
   };
@@ -72,7 +82,10 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       ></PersonForm>
       <h3>Numbers</h3>
-      <Persons personsToShow={personsToShow}></Persons>
+      <Persons
+        personsToShow={personsToShow}
+        deletePerson={deletePerson}
+      ></Persons>
     </div>
   );
 };
