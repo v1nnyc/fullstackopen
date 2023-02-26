@@ -4,7 +4,7 @@ const app = express();
 const morgan = require("morgan");
 app.use(morgan("dev"));
 
-const phoneBookData = [
+const phoneBook = [
   {
     id: 1,
     name: "Arto Hellas",
@@ -28,12 +28,25 @@ const phoneBookData = [
 ];
 
 app.get("/api/persons", (request, response) => {
-  response.json(phoneBookData);
+  response.json(phoneBook);
+});
+
+app.get("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id);
+  const person = phoneBook.find((note) => note.id === id);
+
+  if (person) {
+    response.json(person);
+  } else {
+    response.status(404).end();
+  }
+
+  response.json(person);
 });
 
 app.get("/info", (request, response) => {
   response.send(`
-    <p>Phonebook has info for ${phoneBookData.length} people</p>
+    <p>Phonebook has info for ${phoneBook.length} people</p>
     <p>${new Date()}</p>
     `);
 });
