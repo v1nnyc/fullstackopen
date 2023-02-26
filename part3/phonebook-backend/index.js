@@ -4,6 +4,8 @@ const app = express();
 const morgan = require("morgan");
 app.use(morgan("dev"));
 
+app.use(express.json());
+
 let phoneBook = [
   {
     id: 1,
@@ -47,6 +49,26 @@ app.delete("/api/persons/:id", (request, response) => {
   phoneBook = phoneBook.filter((person) => person.id !== id);
 
   response.status(204).end();
+});
+
+app.post("/api/persons/", (request, response) => {
+  const body = request.body;
+
+  if (!body.name || !body.number) {
+    return response.status(400).json({
+      error: "content missing",
+    });
+  }
+
+  const person = {
+    id: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER),
+    name: body.name,
+    number: body.number,
+  };
+
+  phoneBook = phoneBook.concat(person);
+
+  response.json(person);
 });
 
 app.get("/info", (request, response) => {
