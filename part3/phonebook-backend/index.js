@@ -60,6 +60,12 @@ app.post("/api/persons/", (request, response) => {
     });
   }
 
+  if (phoneBook.find((person) => person.name === body.name)) {
+    return response.status(400).json({
+      error: "name must be unique",
+    });
+  }
+
   const person = {
     id: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER),
     name: body.name,
