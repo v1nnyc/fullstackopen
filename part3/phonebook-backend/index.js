@@ -4,7 +4,7 @@ const app = express();
 const morgan = require("morgan");
 app.use(morgan("dev"));
 
-const phoneBook = [
+let phoneBook = [
   {
     id: 1,
     name: "Arto Hellas",
@@ -40,6 +40,13 @@ app.get("/api/persons/:id", (request, response) => {
   } else {
     response.status(404).end();
   }
+});
+
+app.delete("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id);
+  phoneBook = phoneBook.filter((person) => person.id !== id);
+
+  response.status(204).end();
 });
 
 app.get("/info", (request, response) => {
