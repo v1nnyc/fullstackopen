@@ -4,7 +4,12 @@ const app = express();
 const morgan = require("morgan");
 app.use(morgan("dev"));
 
+morgan(":method :url :status :res[content-length] - :response-time ms");
+
 app.use(express.json());
+
+const morganBody = require("morgan-body");
+morganBody(app);
 
 let phoneBook = [
   {
